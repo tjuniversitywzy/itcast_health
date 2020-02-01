@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>学习Element UI</title>
+  <!-- 引入ElementUI样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入ElementUI组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <style>
+    .el-header, .el-footer {
+      background-color: #B3C0D1;
+      color: #333;
+      text-align: left;
+      line-height: 60px;
+    }
+
+    .el-aside {
+      background-color: #D3DCE6;
+      color: #333;
+      text-align: center;
+      line-height: 200px;
+    }
+
+    .el-main {
+      background-color: #E9EEF3;
+      color: #333;
+      text-align: center;
+      line-height: 590px;
+    }
+    .el-dropdown-link {
+      cursor: pointer;
+      color: #409EFF;
+    }
+    .el-icon-arrow-down {
+      font-size: 12px;
+    }
+  </style>
+</head>
+  <div id="app">
+      <h1>{{title}}</h1>
+    <el-container>
+      <el-aside width="300px">
+        <el-menu>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item>选项1</el-menu-item>
+            <el-menu-item>选项2</el-menu-item>
+            <el-menu-item>选项3</el-menu-item>
+          </el-submenu>
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>导航二</span>
+            </template>
+            <el-menu-item>选项1</el-menu-item>
+            <el-menu-item>选项2</el-menu-item>
+            <el-menu-item>选项3</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-container>
+
+        <el-footer>
+          <el-dropdown  split-button size="small" trigger="hover">
+            个人中心
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item >退出系统</el-dropdown-item>
+              <el-dropdown-item divided>修改密码</el-dropdown-item>
+              <el-dropdown-item divided>联系管理员</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
+          <el-tabs v-model="activeName"  @tab-click="handleClick">
+            <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+          </el-tabs>
+        </el-footer>
+        <el-main>
+            main
+        </el-main>
+        <el-footer>footer</el-footer>
+      </el-container>
+    </el-container>
+  </div>
+<body>
+</body>
+<script type="text/javascript">
+  var vue = new Vue({
+    el:"#app",
+    data:{
+      title:"学习ElementUI-Tabs",
+      activeName: 'second'
+    },
+    methods:{
+      handleClick(tab, event) {
+
+        console.log(tab.index+" "+tab.name);
+      }
+    }
+  });
+</script>
+</html>

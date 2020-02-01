@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.CheckItemDao">
+<!--上方的字段是数据库的列，下方的字段是pojo中的属性-->
+    <insert id="add" parameterType="CheckItem" >
+        insert into t_checkitem (code, name, sex, age, price, type, attention, remark)
+        VALUES (#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
+    </insert>
+    <update id="edit" parameterType="CheckItem">
+        update t_checkitem
+        set code = #{checkItem.code},name = #{checkItem.name},sex = #{checkItem.sex},age = #{checkItem.age},price = #{checkItem.price},type = #{checkItem.type},attention = #{checkItem.attention},remark = #{checkItem.remark}
+        where id = #{checkItem.id}
+    </update>
+
+    <delete id="deleteCheckItemById">
+        delete from t_checkitem where id = #{checkItemId}
+    </delete>
+
+    <select id="selectByCondition" resultType="CheckItem" parameterType="string">
+        select * from t_checkitem
+        <if test="queryString != null and queryString.length>0">
+            where code like concat('%',#{queryString},'%') or name like concat('%',#{queryString},'%')
+        </if>
+    </select>
+    <select id="countCheckItemsById" resultType="java.lang.Long" parameterType="integer">
+        select count(*) from t_checkgroup_checkitem
+        where checkitem_id = #{checkItemId}
+    </select>
+    <select id="findById" resultType="com.itheima.health.pojo.CheckItem" parameterType="integer">
+        select * from t_checkitem
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="CheckItem">
+        select * from t_checkitem
+    </select>
+
+    <select id="findItemByGroupId" resultType="CheckItem">
+        SELECT tc.*
+        from t_checkgroup_checkitem tcc
+        left join t_checkitem tc on tcc.checkitem_id = tc.id
+        where tcc.checkgroup_id = #{id}
+    </select>
+</mapper>

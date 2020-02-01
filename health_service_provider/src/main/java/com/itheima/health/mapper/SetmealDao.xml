@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.SetmealDao">
+
+
+    <resultMap id="groups" type="CheckGroup">
+        <id property="id" column="gid"/>
+        <result property="sex" column="gsex"/>
+        <result property="code" column="gcode"/>
+        <result property="helpCode" column="ghelpcode"/>
+        <result property="name" column="gname"/>
+        <result property="remark" column="gremark"/>
+        <result property="attention" column="gattention"/>
+        <collection property="checkItems" ofType="CheckItem">
+            <id property="id" column="iid"/>
+            <result property="name" column="iname"/>
+            <result property="code" column="icode"/>
+            <result property="sex" column="isex"/>
+            <result property="age" column="iage"/>
+            <result property="price" column="iprice"/>
+            <result property="attention" column="iattention"/>
+            <result property="remark" column="iremark"/>
+            <result property="type" column="itype"/>
+        </collection>
+    </resultMap>
+    <resultMap id="MealDetail" type="Setmeal">
+        <id property="id" column="id"/>
+        <result property="age" column="age"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="helpCode" column="helpCode"/>
+        <result property="price" column="price"/>
+        <result property="img" column="img"/>
+        <result property="remark" column="remark"/>
+        <result property="attention" column="attention"/>
+        <result property="sex" column="sex"/>
+        <collection property="checkGroups" ofType="CheckGroup" resultMap="groups"/>
+    </resultMap>
+    <insert id="add">
+        insert into t_setmeal (name, code, helpCode, sex, age, price, remark, attention, img)
+        values (#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{remark},#{img})
+        <selectKey resultType="integer" order="AFTER" keyProperty="id">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <insert id="addSetmealAndCheckGroup">
+        insert into t_setmeal_checkgroup (setmeal_id, checkgroup_id)
+        values (#{setmeal_id},#{checkgroup_id})
+    </insert>
+    <select id="pageQuery" resultType="com.itheima.health.pojo.Setmeal">
+        select * from t_setmeal
+        <if test=" queryString!=null and queryString.length > 0">
+            WHERE code LIKE CONCAT('%',#{queryString},'%') or name LIKE CONCAT('%',#{queryString},'%') or helpCode like CONCAT('%',#{queryString},'%')
+        </if>
+    </select>
+    <select id="findAll" resultType="com.itheima.health.pojo.Setmeal">
+        select * from t_setmeal
+    </select>
+    <select id="findById" resultMap="MealDetail">
+        select m.*,
+        g.id gid,g.code gcode,g.attention gattention,g.helpCode ghelpCode,g.name gname,g.remark gremark,g.sex gsex,
+        i.id iid, i.code icode, i.name iname, i.sex isex, i.age iage, i.price iprice, i.type itype, i.attention iattention, i.remark iremark
+        from t_setmeal m
+        left join t_setmeal_checkgroup mg on m.id = mg.setmeal_id
+        left join t_checkgroup g on mg.checkgroup_id = g.id
+        left join t_checkgroup_checkitem tcc on g.id = tcc.checkgroup_id
+        left join t_checkitem i on tcc.checkitem_id = i.id
+        where m.id = #{id}
+    </select>
+    <resultMap id="id" type="Setmeal">
+        <id property="id" column="id"/>
+        <collection property="checkGroups" ofType="CheckGroup" javaType="ArrayList" column="id" select="com.itheima.health.dao.CheckGroupDao.findGroupBySetmealId"/>
+    </resultMap>
+    <select id="findId" resultMap="id">
+        select id, name, code, helpCode, sex, age, price, remark, attention, img
+        from t_setmeal
+        where id = #{id}
+    </select>
+
+
+</mapper>

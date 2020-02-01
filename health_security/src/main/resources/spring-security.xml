@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+<!--    配置不需要授权的资源，匿名也可以访问-->
+    <security:http security="none" pattern="/favicon.ico"/>
+    <security:http security="none" pattern="/login.jsp"/>
+    <security:http security="none" pattern="/login-fail.jsp"/>
+    <security:http security="none" pattern="/auth-fail.jsp"/>
+<!--    下面是在配置，某某资源必须要ROLE_ADMIN这个角色才能访问-->
+<!--    有授权才能访问：配置需要授权拦截资源及访问角色和权限 /**是所有文件夹-->
+    <security:http auto-config="true" use-expressions="true">
+<!--        自定义登陆配置
+                username-parameter="user"
+                password-parameter="pass"这两个属性是用来告诉配置器，username将来会叫什么参数
+                如果传来的文本框名字和 username password不同，用这两个属性就能识别了
+
+-->
+        <security:form-login
+                login-page="/login.jsp"
+                default-target-url="/main.jsp"
+                login-processing-url="/user/login.do"
+                authentication-failure-url="/login-fail.jsp"
+        />
+<!--        配置登出-->
+        <security:logout logout-url="/test/logout.do" invalidate-session="true" logout-success-url="/login.jsp"/>
+<!--      访问拒绝处理器  -->
+        <security:access-denied-handler error-page="/auth-fail.jsp"/>
+<!--        使用自定义登陆配置，必须关闭csrf过滤器-->
+        <security:csrf disabled="true"/>
+<!--        /**似乎是只在拦截器中存在-->
+<!--        配置什么角色，或者拥有什么权限才可以访问页面-->
+        <security:intercept-url pattern="/main.jsp" access="hasAnyRole('ROLE_ADMIN','ROLE_READER','ROLE_OMS')"/>
+        <security:intercept-url pattern="/pages/checkitem.html" access="hasAuthority('find')"/>
+        <security:intercept-url pattern="/pages/checkgroup.html" access="hasAnyAuthority('add','update')"/>
+    </security:http>
+<!--    配置授权拦截认证（认证管理者，认证提供者，认证对象）也就是配置角色拥有什么权限-->
+<!--    也可以使用自己配置类的方式-->
+    <bean class="com.itheima.health.security.SecurityUserDetailsService" id="userDetailsService"/>
+<!--    自己定义加密规则-->
+    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailsService">
+<!--            <security:user-service>-->
+<!--                <security:user name="admin" authorities="ROLE_ADMIN,add,find,delete,update" password="{noop}123"/>-->
+<!--                <security:user name="zhangsan" authorities="ROLE_DATAER,find" password="{noop}123"/>-->
+<!--                <security:user name="lisi" authorities="ROLE_OMS,add,updates" password="{noop}123"/>-->
+<!--            </security:user-service>-->
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+<!--    允许security使用注解驱动-->
+    <security:global-method-security pre-post-annotations="enabled"/>
+</beans>

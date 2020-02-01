@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+<!--    配置不需要授权的资源，匿名也可以访问-->
+
+<!--    下面是在配置，某某资源必须要ROLE_ADMIN这个角色才能访问-->
+<!--    有授权才能访问：配置需要授权拦截资源及访问角色和权限 /**是所有文件夹-->
+    <security:http auto-config="true" use-expressions="true">
+
+<!--        前后端分离，这个还是比较关键的，默认跳转交给axois请求-->
+        <security:form-login
+                login-page="http://localhost:8080/pages/login.html"
+                login-processing-url="/sec/login.do"
+                authentication-failure-forward-url="/user/loginFail.do"
+                authentication-success-forward-url="/user/loginSuccess.do"
+        />
+<!--        配置登出-->
+        <security:logout logout-url="/sec/logout.do" invalidate-session="true" logout-success-url="http://localhost:8080/pages/login.html"/>
+<!--      访问拒绝处理器  -->
+<!--        <security:access-denied-handler error-page="/auth-fail.jsp"/>-->
+<!--        使用自定义登陆配置，必须关闭csrf过滤器-->
+        <security:csrf disabled="true"/>
+
+    </security:http>
+<!--    配置授权拦截认证（认证管理者，认证提供者，认证对象）也就是配置角色拥有什么权限-->
+<!--    也可以使用自己配置类的方式-->
+    <bean class="com.itheima.health.security.SecurityUserDetailsService" id="userDetailsService"/>
+<!--    自己定义加密规则-->
+    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+<!--    允许security使用注解驱动-->
+    <security:global-method-security pre-post-annotations="enabled"/>
+</beans>

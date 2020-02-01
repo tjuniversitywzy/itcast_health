@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>学习Element UI</title>
+  <!-- 引入ElementUI样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入ElementUI组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+  <div id="app">
+      <h1>{{title}}</h1>
+    <el-table :data="tableData" stripe>
+      <el-table-column prop="date" label="日期"></el-table-column>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column label="操作" align="center">
+        <!--
+        slot-scope：作用域插槽，可以获取表格数据
+          scope：代表表格数据，可以通过scope.row来获取表格当前行数据，scope不是固定写法
+        -->
+        <template slot-scope="currRow">
+          <el-button type="primary" size="mini" @click="handleUpdate(currRow.row)">编辑</el-button>
+          <el-button type="danger" size="mini"  @click="handleDelete(currRow.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+        @current-change="handleCurrentChange"
+        background="true"
+        current-page="1"
+        page-size="10"
+        layout="total, prev, pager, next, jumper"
+        :total="305">
+    </el-pagination>
+    <el-button :plain="true" @click="open1">消息</el-button>
+    <el-button :plain="true" @click="open2">成功</el-button>
+    <el-button :plain="true" @click="open3">警告</el-button>
+    <el-button :plain="true" @click="open4">错误</el-button>
+  </div>
+<body>
+</body>
+<script type="text/javascript">
+  var vue = new Vue({
+    el:"#app",
+    data:{
+      title:"学习ElementUI",
+      tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1517 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1519 弄'
+      }]
+    },
+    methods:{
+      handleUpdate(row){
+        //alert(row.date);
+        this.$message({
+          message:'更新成功',
+          type:'success'
+        });
+      },
+      handleDelete(row){
+        //alert(row.date);
+        this.$message.error("删除失败！");
+      },
+      handleCurrentChange(page){
+        //alert(page);
+        this.$message({
+          message:'警告，不能翻页',
+          type:'warning'
+        });
+      },
+      open1() {
+        this.$message('这是一条消息提示');
+      },
+      open2() {
+        this.$message({
+          message: '恭喜你，这是一条成功消息',
+          type: 'success'
+        });
+      },
+      open3() {
+        this.$message({
+          message: '警告哦，这是一条警告消息',
+          type: 'warning'
+        });
+      },
+      open4() {
+        this.$message.error('错了哦，这是一条错误消息');
+      }
+    }
+  });
+</script>
+</html>
