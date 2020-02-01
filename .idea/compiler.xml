@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="health_interface" />
+        <module name="health_service_provider" />
+        <module name="health_security" />
+        <module name="health_jobs" />
+        <module name="health_mobile_web" />
+        <module name="health_oms_web" />
+        <module name="health_mobile_backend" />
+        <module name="health_common" />
+        <module name="health_oms_backend" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="health_common" target="1.7" />
+      <module name="health_interface" target="1.7" />
+      <module name="health_jobs" target="1.7" />
+      <module name="health_mobile_backend" target="1.7" />
+      <module name="health_mobile_web" target="1.7" />
+      <module name="health_oms_backend" target="1.7" />
+      <module name="health_oms_web" target="1.7" />
+      <module name="health_security" target="1.7" />
+      <module name="health_service_provider" target="1.7" />
+      <module name="itcast_health" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

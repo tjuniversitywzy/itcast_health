@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/health_common/health_common.iml" filepath="$PROJECT_DIR$/health_common/health_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_interface/health_interface.iml" filepath="$PROJECT_DIR$/health_interface/health_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_jobs/health_jobs.iml" filepath="$PROJECT_DIR$/health_jobs/health_jobs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_mobile_backend/health_mobile_backend.iml" filepath="$PROJECT_DIR$/health_mobile_backend/health_mobile_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_mobile_web/health_mobile_web.iml" filepath="$PROJECT_DIR$/health_mobile_web/health_mobile_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_oms_backend/health_oms_backend.iml" filepath="$PROJECT_DIR$/health_oms_backend/health_oms_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_oms_web/health_oms_web.iml" filepath="$PROJECT_DIR$/health_oms_web/health_oms_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_security/health_security.iml" filepath="$PROJECT_DIR$/health_security/health_security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_service_provider/health_service_provider.iml" filepath="$PROJECT_DIR$/health_service_provider/health_service_provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/itcast_health.iml" filepath="$PROJECT_DIR$/itcast_health.iml" />
+    </modules>
+  </component>
+</project>
